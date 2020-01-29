@@ -4,7 +4,16 @@ import java.util.Random;
 public class Bank
 {
     private HashMap<String, Account> accounts;
-    private final Random random = new Random();
+
+    public Bank() {
+        for (int i = 0; i < 10000; i++) {
+            String accNumber = Double.toString(Math.random()).replace("0.", "");
+            this.accounts.put(accNumber, new Account(accNumber, (long) (Math.random() * 100000)));
+        }
+    }
+
+    private final Random random = new Random()
+
 
     public synchronized boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
         throws InterruptedException
@@ -22,7 +31,7 @@ public class Bank
      */
     public void transfer(String fromAccountNum, String toAccountNum, long amount)
     {
-
+        
     }
 
     /**
