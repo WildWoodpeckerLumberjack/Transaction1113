@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Account {
     private String accNumber;
     private long money;
@@ -34,6 +32,4 @@ public class Account {
     public boolean isBlocked() {
         return isBlocked;
     }
-
-
 }
