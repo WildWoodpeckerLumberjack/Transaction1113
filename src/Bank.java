@@ -1,21 +1,22 @@
+import java.util.HashMap;
 import java.util.Random;
-import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Bank {
-    private TreeMap<String, Account> accounts;
+    private HashMap<String, Account> accounts;
     private final Random random = new Random();
     private long fraudAmount = 50000;
     private int accountsNumber = 0;
 
     public Bank(int accountsNumber) {
-        this.accounts = new TreeMap<String, Account>();
+        this.accounts = new HashMap<String, Account>();
         this.accountsNumber = accountsNumber;
         for (int i = 0; i < accountsNumber; i++) {
             this.accounts.put(Integer.toString(i), new Account(newAccountNum(), (long) (Math.random() * 1000000)));
         }
     }
 
-    public TreeMap<String, Account> getAccounts() {
+    public HashMap<String, Account> getAccounts() {
         return accounts;
     }
 
@@ -54,21 +55,19 @@ public class Bank {
      * TODO: реализовать метод. Возвращает остаток на счёте.
      */
     public long getBalance(String accountNum) {
-        System.out.println(accountNum);
-        getAccounts().values().
-        System.out.println(getAccounts().get(accountNum).getMoney());
-        return getAccounts().get(accountNum).getMoney();
+        //System.out.println(accountNum + " " + findAccByAccNumber(accountNum).getMoney());
+        return findAccByAccNumber(accountNum).getMoney();
     }
 
     /**
      * Ну, где getBalance, там и setBalance :)
      */
     public void setBalance(String accountNum, long amount) {
-        getAccounts().get(accountNum).setMoney(amount);
+        findAccByAccNumber(accountNum).setMoney(amount);
     }
 
     public boolean isBlocked(String accountNum) {
-        return getAccounts().get(accountNum).isBlocked();
+        return findAccByAccNumber(accountNum).isBlocked();
     }
 
     public String newAccountNum() {
@@ -80,6 +79,16 @@ public class Bank {
     }
 
     public void blockAccount(String accountNum) {
-        getAccounts().get(accountNum).setBlocked(true);
+        findAccByAccNumber(accountNum).setBlocked(true);
+    }
+
+    public Account findAccByAccNumber(String accountNum) {
+        final Account[] acc = {null};
+        getAccounts().values().forEach(a -> {
+            if (a.getAccNumber().equals(accountNum)) {
+                acc[0] = a;
+            }
+        });
+        return acc[0];
     }
 }
